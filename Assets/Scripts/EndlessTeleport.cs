@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TreadmillTeleport : MonoBehaviour
+public class EndlessTeleport : MonoBehaviour
 {
     [Tooltip("The empty GameObject at the top of the stairs where the player will teleport to.")]
     public Transform teleportTarget;
