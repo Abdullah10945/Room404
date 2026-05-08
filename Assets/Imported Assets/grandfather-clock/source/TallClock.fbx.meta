@@ -3,7 +3,27 @@ guid: c9e0e64cb68eb2940a38017d38e4baff
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClockCase
+    second: {fileID: 2100000, guid: b91ebfdd08b041441812665f65ee2c37, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clockface
+    second: {fileID: 2100000, guid: b87db78df624ba942b0009f0d275957a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: 4be3b1050630f0845ad05b0eedaad976, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MoonDial
+    second: {fileID: 2100000, guid: 7804e3251239fdd4fb6d68b2ed83174a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
