@@ -1,189 +1,69 @@
 fileFormatVersion: 2
-guid: fa4a0ec841e162146bbdbdd99551f6bc
+guid: a30717883f5bfee4a937ca0d61f413cd
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects:
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BlackTexture
-    second: {fileID: 2100000, guid: 3ad304ee848a4d847a03f1192120dfa5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Blackout
-    second: {fileID: 2100000, guid: a57bb98af99425d4283a4f75aad94fca, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Brick
-    second: {fileID: 2100000, guid: 32ee40881a5badc4ab18661ace222825, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Floor
-    second: {fileID: 2100000, guid: a7f79abc5f8a6db4e9901474518cb5ed, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Light
-    second: {fileID: 2100000, guid: 921f7207a33101b46a45767745dcd745, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Metal_Corrugated
-    second: {fileID: 2100000, guid: 85fef0c9cbce3284786722e1faf7086b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Translucent_Glass_Gray
-    second: {fileID: 2100000, guid: b19b0b4ed00788c449d444bdb4fb4e3f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ceilingtexture
-    second: {fileID: 2100000, guid: 5c41d5a408a7de84399ed41480fdfc35, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: door
-    second: {fileID: 2100000, guid: 9b86333654d81fd4e9704152e0bc0cce, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: light2
-    second: {fileID: 2100000, guid: 92a8e98fcc153064b9c5eb7bccdf259a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: like
-    second: {fileID: 2100000, guid: aa0a48b1bd106e745aa452ac2ea7953e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: material
-    second: {fileID: 2100000, guid: 49f53b56447908f4fb25af60fd6b41ff, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: metal
-    second: {fileID: 2100000, guid: 3246d0876dcc4214bad74f37392aa311, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: plaster
-    second: {fileID: 2100000, guid: fea491e9a59b2a84f8e9be745b7e12fb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: rock
-    second: {fileID: 2100000, guid: e6d1c9bbb36973d44a7a9f0c8baf53e1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: trim
-    second: {fileID: 2100000, guid: be6db123863519648854a08cf2ef779e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: walltexture
-    second: {fileID: 2100000, guid: e16bf96e432fc094aa5900eae19d9348, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: BlackTexture_baseColor
-    second: {fileID: 2800000, guid: a6b566b5b8e7604499ff7eea89a604ed, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Brick_baseColor
-    second: {fileID: 2800000, guid: 11d47ba11584b084f998f10d614657db, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Brick_normal
-    second: {fileID: 2800000, guid: 0fdd966d4f4ff8f498bd88e4e2613cf5, type: 3}
-  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Floor_baseColor
-    second: {fileID: 2800000, guid: 74f0065028c31fa40b49f242e532b4eb, type: 3}
+    second: {fileID: 2800000, guid: 11ec27b4fa5ad2841a9eb79967a9e1bc, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: Floor_normal
-    second: {fileID: 2800000, guid: 9ea62f2384c9f15498ae41afc841b0c6, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Metal_Corrugated_baseColor
-    second: {fileID: 2800000, guid: 45142e88e326f0041bfd9b12fb7ec54c, type: 3}
+    second: {fileID: 2800000, guid: a53a597d56d4a8941ad1de0fcb929562, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: ceilingtexture_baseColor
-    second: {fileID: 2800000, guid: ba990002e3c4a374db664bf8a49a5a0c, type: 3}
+    second: {fileID: 2800000, guid: a9ff690227ac96b4085a877bd513a780, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: ceilingtexture_normal
-    second: {fileID: 2800000, guid: facbba83585c18f4eba8a9a8dcb8dfee, type: 3}
+    second: {fileID: 2800000, guid: ee4c16342f3c62d44be6c93157edc8a3, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: door_baseColor
-    second: {fileID: 2800000, guid: a28bac2fe1a115a49a6d7a7c7e79fdac, type: 3}
+    second: {fileID: 2800000, guid: 61f0503998c619f43acfe94dedbc711c, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: door_normal
-    second: {fileID: 2800000, guid: 86cc363685e45494e949949fe6ca75b0, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: like_baseColor
-    second: {fileID: 2800000, guid: 65424552baa079b4f8238c7b32d7ecfa, type: 3}
+    second: {fileID: 2800000, guid: 580844a528090f34f98ea3c316084735, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: metal_baseColor
-    second: {fileID: 2800000, guid: e8436f57a45c84c40865cb49cd911721, type: 3}
+    second: {fileID: 2800000, guid: 601586f7242f7044aa672642665a3785, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: plaster_baseColor
-    second: {fileID: 2800000, guid: aba6887a53ff3784393b92114aff2b99, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: rock_baseColor
-    second: {fileID: 2800000, guid: 74e3da443bbb3534da51d5b0207b360b, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: rock_normal
-    second: {fileID: 2800000, guid: 8147b4ca225c0b041acad6b80f8d07e1, type: 3}
+    second: {fileID: 2800000, guid: 168b4c7a65f196d40bae618768bb8015, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: trim_baseColor
-    second: {fileID: 2800000, guid: a0a643ec7785f0e4ba39e4b54160ecd7, type: 3}
+    second: {fileID: 2800000, guid: 6c9c3678f6d5d654c852484c6dc21993, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: trim_normal
-    second: {fileID: 2800000, guid: fe5cffa0b9e2f25409c363821a3e5ec8, type: 3}
+    second: {fileID: 2800000, guid: b14b53350551f8a44ad6aebdff33b8b2, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: walltexture_baseColor
-    second: {fileID: 2800000, guid: 256a40f617740cd40a65d41238169af0, type: 3}
+    second: {fileID: 2800000, guid: a3e93acfb782c89408a792ed11e51c37, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: walltexture_normal
-    second: {fileID: 2800000, guid: c991f0e022a15c54e83bfc3fefa7b59c, type: 3}
+    second: {fileID: 2800000, guid: 76112bf12d6407c4b8276e67e5955a62, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
