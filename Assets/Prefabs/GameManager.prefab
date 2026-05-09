@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe5e59ee395a1543990871ecbc894a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  currentLoop: 0
+  currentLoop: 1
   isCurrentPuzzleSolved: 0

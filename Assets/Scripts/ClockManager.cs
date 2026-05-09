@@ -1,24 +1,26 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Clock))] // Ensures your Clock.cs is on the same GameObject
 [RequireComponent(typeof(AudioSource))]
 public class ClockManager : MonoBehaviour
 {
-    [Header("Clock Hands (Transforms)")]
-    public Transform hourHand;
-    public Transform minuteHand;
+    [Tooltip("If true, manually ticks the seconds hand for atmosphere, without affecting minutes/hours.")]
+    public bool tickSeconds = true;
 
-    [Header("Rotation Settings")]
-    [Tooltip("Which axis does the hand rotate around? Usually Vector3.forward (Z) or Vector3.up (Y) depending on your 3D model.")]
-    public Vector3 rotationAxis = Vector3.forward;
-
+    private Clock clockScript;
     private AudioSource audioSource;
+    private float secondTimer = 0f;
 
     void Start()
     {
+        clockScript = GetComponent<Clock>();
         audioSource = GetComponent<AudioSource>();
 
-        // Subscribe to the GameManager events! 
-        // This tells the clock to listen for when the loop changes without constantly checking in Update()
+        // Force the built-in clock settings to exactly what you requested
+        clockScript.realTime = false;
+        clockScript.clockSpeed = 0f; // Stops automatic time progression
+
+        // Subscribe to the GameManager events
         GameManager.Instance.OnLoopAdvanced += UpdateClockTime;
         GameManager.Instance.OnLoopReset += UpdateClockTime;
 
@@ -28,7 +30,7 @@ public class ClockManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Always unsubscribe from events when destroyed to prevent memory leaks
+        // Always unsubscribe from events when destroyed
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnLoopAdvanced -= UpdateClockTime;
@@ -36,24 +38,33 @@ public class ClockManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // Manually tick the seconds for the creepy vibe. 
+        // Because clockSpeed is 0, this will NEVER accidentally advance the minute hand!
+        if (tickSeconds)
+        {
+            secondTimer += Time.deltaTime;
+            if (secondTimer >= 1.0f)
+            {
+                secondTimer -= 1.0f;
+                clockScript.seconds++;
+
+                if (clockScript.seconds >= 60)
+                {
+                    clockScript.seconds = 0;
+                }
+            }
+        }
+    }
+
     private void UpdateClockTime()
     {
-        // Get the current loop from the GameManager. 
-        // Loop 0 = 1:01, Loop 1 = 2:02, etc.
         int currentLoop = GameManager.Instance.currentLoop;
 
-        int targetHour = currentLoop + 1;
-        int targetMinute = currentLoop + 1;
-
-        // Calculate the degrees (360 degrees in a circle)
-        // Hour hand: 30 degrees per hour (360 / 12)
-        // Minute hand: 6 degrees per minute (360 / 60)
-        float hourAngle = targetHour * 30f;
-        float minuteAngle = targetMinute * 6f;
-
-        // Apply the rotation. We use localRotation so it works no matter how the clock is placed on the wall.
-        if (hourHand != null) hourHand.localRotation = Quaternion.Euler(rotationAxis * hourAngle);
-        if (minuteHand != null) minuteHand.localRotation = Quaternion.Euler(rotationAxis * minuteAngle);
+        // Loop 0 = 1:01, Loop 1 = 2:02, etc.
+        clockScript.hour = currentLoop + 1;
+        clockScript.minutes = currentLoop + 1;
 
         // Play the KA-CHUNK sound!
         if (audioSource != null && audioSource.clip != null)

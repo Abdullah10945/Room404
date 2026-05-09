@@ -1,79 +1,91 @@
 using UnityEngine;
+using DoorScript; // This lets us talk to your custom Door class!
 
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Door))] // Ensures your Door.cs is attached to this same object
 public class Anomaly_PortalDoor : MonoBehaviour, IInteractable
 {
-    [Header("Door Animation Settings")]
-    public float smooth = 1.0f;
-    public float doorOpenAngle = -90.0f; // Adjust to 90 if it swings the wrong way
+    [Header("Loop Logic")]
+    [Tooltip("Which loop number should this puzzle be active on? (Loop 1 = Index 0)")]
+    public int activeOnLoopIndex = 0;
 
-    [Header("Audio")]
-    public AudioClip knockSound;
+    [Header("Door Links")]
+    [Tooltip("Drag the SECOND door's Door.cs component here so they open together.")]
+    public Door otherDoorToOpen;
 
-    [Header("Teleportation Setup")]
-    [Tooltip("Place an empty GameObject where you want the player to come out")]
-    public Transform teleportDestination;
-
-    private AudioSource audioSource;
-    private bool isOpen = false;
-    private float doorCloseAngle;
+    private Door thisDoor;
+    private Collider doorCollider;
+    private bool hasBeenOpened = false; // Tracks if we solved the puzzle this loop
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.playOnAwake = false;
+        thisDoor = GetComponent<Door>();
+        doorCollider = GetComponent<Collider>();
 
-        // Remember starting rotation
-        doorCloseAngle = transform.localEulerAngles.y;
+        // Subscribe to GameManager events
+        GameManager.Instance.OnLoopAdvanced += CheckLoopState;
+        GameManager.Instance.OnLoopReset += CheckLoopState;
+
+        CheckLoopState();
     }
 
-    void Update()
+    void OnDestroy()
     {
-        // Smoothly swing the door open
-        if (isOpen)
+        if (GameManager.Instance != null)
         {
-            Quaternion target = Quaternion.Euler(0, doorOpenAngle, 0);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * 5 * smooth);
+            GameManager.Instance.OnLoopAdvanced -= CheckLoopState;
+            GameManager.Instance.OnLoopReset -= CheckLoopState;
         }
     }
 
-    // This is called by PlayerInteract.cs when the player presses 'E'
+    private void CheckLoopState()
+    {
+        if (GameManager.Instance.currentLoop == activeOnLoopIndex)
+        {
+            // It is Loop 1! Turn this puzzle's interaction ON.
+            doorCollider.enabled = true;
+            hasBeenOpened = false;
+        }
+        else
+        {
+            // The loop is over. Disable interaction!
+            doorCollider.enabled = false;
+            hasBeenOpened = false;
+
+            // Revert (Close) the doors if they were left open!
+            // Since your OpenDoor() method toggles the state, we check if it's currently open before calling it.
+            if (thisDoor.open)
+            {
+                thisDoor.OpenDoor();
+            }
+
+            if (otherDoorToOpen != null && otherDoorToOpen.open)
+            {
+                otherDoorToOpen.OpenDoor();
+            }
+        }
+    }
+
+    // Called by PlayerInteract.cs when the player presses 'E'
     public void Interact()
     {
-        if (!isOpen)
+        // Only allow interaction if we haven't opened it yet, and it's the correct loop
+        if (!hasBeenOpened && GameManager.Instance.currentLoop == activeOnLoopIndex)
         {
-            isOpen = true; // Starts the opening animation in Update()
+            hasBeenOpened = true;
 
-            // Play the knock sound
-            if (knockSound != null)
+            // Tell your custom Door script to open!
+            if (!thisDoor.open) thisDoor.OpenDoor();
+
+            // Tell the second Door script to open!
+            if (otherDoorToOpen != null && !otherDoorToOpen.open)
             {
-                audioSource.PlayOneShot(knockSound);
-            }
-        }
-    }
-
-    // This triggers when the player walks THROUGH the open door
-    private void OnTriggerEnter(Collider other)
-    {
-        // Only teleport if the door is actually open and it's the player walking through
-        if (isOpen && other.CompareTag("Player"))
-        {
-            if (teleportDestination != null)
-            {
-                // Temporarily disable the CharacterController to allow manual repositioning
-                CharacterController cc = other.GetComponent<CharacterController>();
-                if (cc != null) cc.enabled = false;
-
-                // Teleport the player and match the rotation of the destination
-                other.transform.position = teleportDestination.position;
-                other.transform.rotation = teleportDestination.rotation;
-
-                if (cc != null) cc.enabled = true;
+                otherDoorToOpen.OpenDoor();
             }
 
-            // Set the stage as cleared so the stairs allow them to advance!
+            // Mark the puzzle as solved so the stairs work.
             GameManager.Instance.isCurrentPuzzleSolved = true;
-            Debug.Log("Player walked through the portal! Puzzle 1 Solved.");
+            Debug.Log("Both Portal Doors Triggered! Puzzle 1 Solved.");
         }
     }
 }

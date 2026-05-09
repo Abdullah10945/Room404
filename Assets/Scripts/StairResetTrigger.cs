@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Attach this to a large BoxCollider (Is Trigger = true) on your middle landing.
+// Attach this to a large BoxCollider (Is Trigger = true) on your middle landing or hallway.
 public class StairResetTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
@@ -12,7 +12,9 @@ public class StairResetTrigger : MonoBehaviour
             if (!EndlessTeleport.canTeleport)
             {
                 EndlessTeleport.canTeleport = true;
-                // Debug.Log("Stairs Reset! Player can now teleport again.");
+
+                // Print the state change!
+                Debug.Log($"[ResetTrigger] Player reached safe zone! canTeleport CHANGED to: {EndlessTeleport.canTeleport} (Unlocked)");
             }
         }
     }
