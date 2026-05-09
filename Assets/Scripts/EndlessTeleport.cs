@@ -6,21 +6,21 @@ public class EndlessTeleport : MonoBehaviour
     public Transform teleportTarget;
 
     [Tooltip("Check this if this is the DOWN stairs trigger to advance the loop.")]
-    public bool isDownTrigger = true;
+    public bool isDownTrigger = false;
 
-    // A static variable means ALL teleport triggers share this single timer.
-    // This prevents the top and bottom triggers from bouncing the player back and forth.
-    private static float nextTeleportTime = 0f;
+    // A static boolean is shared across EVERY TreadmillTeleport script in the scene.
+    // If one turns it false, they ALL turn false.
+    public static bool canTeleport = true;
 
     private void OnTriggerEnter(Collider other)
     {
-        // 1. Safety Check: Are we on cooldown?
-        if (Time.time < nextTeleportTime) return;
+        // 1. If teleports are locked (because we just used one), ignore this completely!
+        if (!canTeleport) return;
 
         if (other.CompareTag("Player"))
         {
-            // 2. Set the cooldown so no other trigger can fire for 0.2 seconds
-            nextTeleportTime = Time.time + 0.2f;
+            // 2. IMMEDIATELY lock all teleporters so we don't bounce back!
+            canTeleport = false;
 
             // 3. Calculate offset for seamless movement
             Vector3 offset = other.transform.position - transform.position;
@@ -45,11 +45,9 @@ public class EndlessTeleport : MonoBehaviour
                     GameManager.Instance.ResetLoop();
                 }
             }
-            // If they walked UP the stairs, we usually just reset them or do nothing, 
-            // since walking UP isn't how you escape. You can adjust this based on your design!
             else
             {
-                // Optional: Walking back up always resets the loop?
+                // Optional: Walking back up usually resets the loop as a punishment
                 // GameManager.Instance.ResetLoop(); 
             }
         }
