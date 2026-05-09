@@ -30,6 +30,7 @@ public class Anomaly_EchoTrap : MonoBehaviour
     [Tooltip("An empty GameObject with an AudioSource to act as the phantom")]
     public AudioSource phantomAudioSource;
     public float safeDistance = 4.0f;
+    [Tooltip("The constant speed at which the phantom catches up when you stop.")]
     public float catchUpSpeed = 3.0f;
 
     [Header("Effects")]
@@ -45,9 +46,16 @@ public class Anomaly_EchoTrap : MonoBehaviour
     private float currentDistance;
     private Vector3 initialPhantomPosition;
 
+    // Tracks physical movement instead of buggy CharacterController velocity
+    private Vector3 lastPlayerPos;
+
     void Start()
     {
-        if (player != null) playerController = player.GetComponent<CharacterController>();
+        if (player != null)
+        {
+            playerController = player.GetComponent<CharacterController>();
+            lastPlayerPos = player.position;
+        }
 
         // Ensure the screen starts clear
         if (blackoutPanel != null)
@@ -101,7 +109,6 @@ public class Anomaly_EchoTrap : MonoBehaviour
     private void CheckLoopState()
     {
         ResetTrapState();
-        // NOTE: We no longer auto-solve the puzzle here. The player MUST hit the end trigger now.
     }
 
     private void SetStartTriggersEnabled(bool state)
@@ -150,7 +157,6 @@ public class Anomaly_EchoTrap : MonoBehaviour
         }
     }
 
-    // Called when the player successfully reaches the end collider
     public void EndTrap()
     {
         // Only trigger if the trap is actually actively chasing the player
@@ -158,17 +164,14 @@ public class Anomaly_EchoTrap : MonoBehaviour
         {
             isTrapActive = false;
 
-            // Turn off the phantom and stop its sound
             if (phantomAudioSource != null)
             {
                 phantomAudioSource.Stop();
                 phantomAudioSource.gameObject.SetActive(false);
             }
 
-            // Disable the end trigger so it can't be hit repeatedly
             if (endTrigger != null) endTrigger.enabled = false;
 
-            // Mark the puzzle as solved! Now the stairs will let them loop.
             GameManager.Instance.isCurrentPuzzleSolved = true;
             Debug.Log("Player reached the end! Phantom stopped. Puzzle Solved.");
         }
@@ -191,17 +194,27 @@ public class Anomaly_EchoTrap : MonoBehaviour
             phantomAudioSource.gameObject.SetActive(isCurrentLoop);
         }
 
-        // Turn start triggers back on ONLY if this loop is currently active
         SetStartTriggersEnabled(isCurrentLoop);
-
-        // Ensure the end trigger is OFF until the start triggers are actually hit
         if (endTrigger != null) endTrigger.enabled = false;
     }
 
     void Update()
     {
-        if (!isTrapActive || isCaught || playerController == null) return;
+        if (player == null) return;
 
+        // 1. Manually calculate physical speed (Ignoring Y gravity to prevent bugs)
+        Vector3 currentFlatPos = new Vector3(player.position.x, 0, player.position.z);
+        Vector3 lastFlatPos = new Vector3(lastPlayerPos.x, 0, lastPlayerPos.z);
+
+        float playerSpeed = Vector3.Distance(currentFlatPos, lastFlatPos) / Time.deltaTime;
+
+        // Always record the position for the next frame
+        lastPlayerPos = player.position;
+
+        // If the trap isn't actively chasing us, stop here.
+        if (!isTrapActive || isCaught) return;
+
+        // 2. Math check: Did the player look back?
         float lookDot = Vector3.Dot(playerCamera.forward, hallwayDirection.forward);
         if (lookDot < -0.1f)
         {
@@ -210,13 +223,18 @@ public class Anomaly_EchoTrap : MonoBehaviour
             return;
         }
 
-        if (playerController.velocity.magnitude > 0.1f)
+        // 3. Movement check: Uses our physical playerSpeed now!
+        if (playerSpeed > 0.1f)
         {
-            currentDistance = Mathf.Lerp(currentDistance, safeDistance, Time.deltaTime * 2f);
+            // Player is moving. Fall back to the safe distance at a CONSTANT predictable speed.
+            // (We fall back slightly faster than the catchup speed so it resets cleanly)
+            currentDistance = Mathf.MoveTowards(currentDistance, safeDistance, catchUpSpeed * 1.5f * Time.deltaTime);
         }
         else
         {
+            // Player stopped! Phantom moves in at a strictly CONSTANT speed.
             currentDistance -= catchUpSpeed * Time.deltaTime;
+
             if (currentDistance <= 0.5f)
             {
                 Debug.Log("Phantom caught up! Caught!");
@@ -225,6 +243,8 @@ public class Anomaly_EchoTrap : MonoBehaviour
             }
         }
 
+        // 4. Update Phantom Position. Because we use "currentDistance", 
+        // the phantom flawlessly teleports exactly when the player hits the Treadmill!
         if (phantomAudioSource != null)
         {
             Vector3 phantomPos = player.position - hallwayDirection.forward * currentDistance;
