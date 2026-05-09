@@ -1,34 +1,79 @@
 using UnityEngine;
 
-// Put this script directly on the "Correct" door in Loop 1.
-// Make sure it has a BoxCollider.
+[RequireComponent(typeof(AudioSource))]
 public class Anomaly_PortalDoor : MonoBehaviour, IInteractable
 {
-    [Header("Portal Settings")]
-    [Tooltip("The duplicate hallway or void that appears when opened")]
-    public GameObject portalVisuals;
+    [Header("Door Animation Settings")]
+    public float smooth = 1.0f;
+    public float doorOpenAngle = -90.0f; // Adjust to 90 if it swings the wrong way
 
     [Header("Audio")]
-    public AudioSource heavyKnockSound;
+    public AudioClip knockSound;
 
-    private bool hasBeenOpened = false;
+    [Header("Teleportation Setup")]
+    [Tooltip("Place an empty GameObject where you want the player to come out")]
+    public Transform teleportDestination;
 
+    private AudioSource audioSource;
+    private bool isOpen = false;
+    private float doorCloseAngle;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+
+        // Remember starting rotation
+        doorCloseAngle = transform.localEulerAngles.y;
+    }
+
+    void Update()
+    {
+        // Smoothly swing the door open
+        if (isOpen)
+        {
+            Quaternion target = Quaternion.Euler(0, doorOpenAngle, 0);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * 5 * smooth);
+        }
+    }
+
+    // This is called by PlayerInteract.cs when the player presses 'E'
     public void Interact()
     {
-        if (!hasBeenOpened)
+        if (!isOpen)
         {
-            hasBeenOpened = true;
+            isOpen = true; // Starts the opening animation in Update()
 
-            // 1. Play the loud clang
-            if (heavyKnockSound != null) heavyKnockSound.Play();
+            // Play the knock sound
+            if (knockSound != null)
+            {
+                audioSource.PlayOneShot(knockSound);
+            }
+        }
+    }
 
-            // 2. Open the portal (e.g., enable the duplicate hallway mesh)
-            if (portalVisuals != null) portalVisuals.SetActive(true);
+    // This triggers when the player walks THROUGH the open door
+    private void OnTriggerEnter(Collider other)
+    {
+        // Only teleport if the door is actually open and it's the player walking through
+        if (isOpen && other.CompareTag("Player"))
+        {
+            if (teleportDestination != null)
+            {
+                // Temporarily disable the CharacterController to allow manual repositioning
+                CharacterController cc = other.GetComponent<CharacterController>();
+                if (cc != null) cc.enabled = false;
 
-            // 3. Solve the puzzle! Now the Treadmill will let them pass.
+                // Teleport the player and match the rotation of the destination
+                other.transform.position = teleportDestination.position;
+                other.transform.rotation = teleportDestination.rotation;
+
+                if (cc != null) cc.enabled = true;
+            }
+
+            // Set the stage as cleared so the stairs allow them to advance!
             GameManager.Instance.isCurrentPuzzleSolved = true;
-
-            Debug.Log("Portal Opened! Puzzle 1 Solved.");
+            Debug.Log("Player walked through the portal! Puzzle 1 Solved.");
         }
     }
 }
