@@ -4156,6 +4156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 877017360}
   isDownTrigger: 0
+  yOffsetBump: 0.1
 --- !u!1 &442465313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -728371473347012690, guid: a30717883f5bfee4a937ca0d61f413cd, type: 3}
@@ -4313,6 +4314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 1675008992}
   isDownTrigger: 0
+  yOffsetBump: 0.1
 --- !u!65 &469348432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8381,6 +8383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 1349512255}
   isDownTrigger: 1
+  yOffsetBump: 0.1
 --- !u!65 &991096280
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9767,6 +9770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 1349512255}
   isDownTrigger: 1
+  yOffsetBump: 0.1
 --- !u!65 &1176224546
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11864,6 +11868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 991096278}
   isDownTrigger: 1
+  yOffsetBump: 0.1
 --- !u!65 &1349512252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13277,6 +13282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d945cbcb1526746b3a8fa91de61b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Anomaly_MotionSensor
+  activeOnLoopIndex: 1
   hallwayLights:
   - {fileID: 1067632338}
   - {fileID: 2009666857}
@@ -13298,7 +13304,8 @@ MonoBehaviour:
   - {fileID: 966149453}
   - {fileID: 1775631059}
   - {fileID: 1913726616}
-  timeToDarkness: 3
+  lightOnDuration: 5
+  switchSound: {fileID: 0}
 --- !u!1 &1579645691
 GameObject:
   m_ObjectHideFlags: 0
@@ -15957,6 +15964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EndlessTeleport
   teleportTarget: {fileID: 991096278}
   isDownTrigger: 1
+  yOffsetBump: 0.1
 --- !u!65 &1838445579
 BoxCollider:
   m_ObjectHideFlags: 0
