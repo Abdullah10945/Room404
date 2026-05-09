@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
 
+    public AudioSource footstepAudio;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -24,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         // Move relative to where the player is looking
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
+        footstepAudio.enabled = move.magnitude > 0.1f; // Play footstep sound when moving
 
         // Apply gravity
         if (controller.isGrounded && velocity.y < 0)
