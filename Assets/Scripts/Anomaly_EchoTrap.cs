@@ -29,6 +29,8 @@ public class Anomaly_EchoTrap : MonoBehaviour
     [Header("Phantom Settings")]
     [Tooltip("An empty GameObject with an AudioSource to act as the phantom")]
     public AudioSource phantomAudioSource;
+    public AudioSource JSAudioSource;
+
     public float safeDistance = 4.0f;
     [Tooltip("The constant speed at which the phantom catches up when you stop.")]
     public float catchUpSpeed = 3.0f;
@@ -45,6 +47,8 @@ public class Anomaly_EchoTrap : MonoBehaviour
     private bool isDelaying = false;
     private float currentDistance;
     private Vector3 initialPhantomPosition;
+    private PlayerMovement playerMovementScript; // <-- ADD THIS LINE
+
 
     // Tracks physical movement instead of buggy CharacterController velocity
     private Vector3 lastPlayerPos;
@@ -54,6 +58,7 @@ public class Anomaly_EchoTrap : MonoBehaviour
         if (player != null)
         {
             playerController = player.GetComponent<CharacterController>();
+            playerMovementScript = player.GetComponent<PlayerMovement>();
             lastPlayerPos = player.position;
         }
 
@@ -258,8 +263,11 @@ public class Anomaly_EchoTrap : MonoBehaviour
         isTrapActive = false;
 
         if (phantomAudioSource != null) phantomAudioSource.Stop();
-        if (jumpScareSound != null) AudioSource.PlayClipAtPoint(jumpScareSound, playerCamera.position);
-
+        //if (jumpScareSound != null) AudioSource.PlayClipAtPoint(jumpScareSound, playerCamera.position);
+        if (playerMovementScript != null)
+        {
+            playerMovementScript.PlayJumpScare();
+        }
         if (blackoutPanel != null)
         {
             blackoutPanel.gameObject.SetActive(true);

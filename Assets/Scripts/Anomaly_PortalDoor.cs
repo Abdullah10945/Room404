@@ -40,7 +40,7 @@ public class Anomaly_PortalDoor : MonoBehaviour, IInteractable
 
     private void CheckLoopState()
     {
-        if (GameManager.Instance.currentLoop == activeOnLoopIndex)
+        if (GameManager.Instance.currentLoop == activeOnLoopIndex || GameManager.Instance.currentLoop == 3)
         {
             // It is Loop 1! Turn this puzzle's interaction ON.
             doorCollider.enabled = true;
@@ -70,7 +70,7 @@ public class Anomaly_PortalDoor : MonoBehaviour, IInteractable
     public void Interact()
     {
         // Only allow interaction if we haven't opened it yet, and it's the correct loop
-        if (!hasBeenOpened && GameManager.Instance.currentLoop == activeOnLoopIndex)
+        if (!hasBeenOpened && (GameManager.Instance.currentLoop == activeOnLoopIndex || GameManager.Instance.currentLoop == 3))
         {
             hasBeenOpened = true;
 

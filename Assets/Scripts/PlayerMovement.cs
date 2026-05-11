@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource footstepAudio;
     [Tooltip("Drag all 10 of your footstep audio clips here")]
     public AudioClip[] footstepClips;
+    public AudioClip jumpScare;
     [Tooltip("How much time between each footstep sound?")]
     public float stepInterval = 0.5f;
 
@@ -81,5 +82,13 @@ public class PlayerMovement : MonoBehaviour
         // PlayOneShot allows the full sound to play out without being cut off,
         // even if another footstep starts playing!
         footstepAudio.PlayOneShot(footstepClips[randomIndex]);
+    }
+
+    public void PlayJumpScare()
+    {
+        if (jumpScare != null && footstepAudio != null)
+        {
+            footstepAudio.PlayOneShot(jumpScare);
+        }
     }
 }
